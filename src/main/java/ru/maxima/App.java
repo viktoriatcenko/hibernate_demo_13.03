@@ -5,6 +5,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import ru.maxima.model.Person;
 
+import java.util.List;
+
 /**
  * Hello world!
  *
@@ -12,17 +14,15 @@ import ru.maxima.model.Person;
 public class App {
     public static void main( String[] args ) {
         Configuration configuration = new Configuration().addAnnotatedClass(Person.class);
-
         SessionFactory sessionFactory = configuration.buildSessionFactory();
-
         Session session = sessionFactory.getCurrentSession();
 
         try {
             session.beginTransaction();
 
-            Person person = session.get(Person.class, 3);
+            Person person = session.get(Person.class, 4);
 
-            session.delete(person);
+            person.getItems().forEach(System.out::println);
 
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -45,4 +45,10 @@ public class App {
 //            session.save(person1);
 //            session.save(person2);
 //            session.save(person3);
+
+//            List people = session.createQuery("from Person where age > 7").getResultList();
+//
+//            people.forEach(System.out::println);
+//
+//            session.getTransaction().commit();
 
