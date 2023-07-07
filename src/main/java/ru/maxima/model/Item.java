@@ -3,7 +3,7 @@ package ru.maxima.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Item")
+@Table(name = "item")
 @Access(value=AccessType.FIELD)
 public class Item {
 
@@ -22,8 +22,7 @@ public class Item {
     public Item() {
     }
 
-    public Item(Long id, String itemName, Person owner) {
-        this.id = id;
+    public Item(String itemName, Person owner) {
         this.itemName = itemName;
         this.owner = owner;
     }
