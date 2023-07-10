@@ -3,12 +3,12 @@ package ru.maxima;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import ru.maxima.model.Item;
-import ru.maxima.model.Person;
+import ru.maxima.model.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 
 /**
  * Hello world!
@@ -17,7 +17,10 @@ import java.util.List;
 public class App {
     public static void main( String[] args ) {
         Configuration configuration = new Configuration().addAnnotatedClass(Person.class)
-                .addAnnotatedClass(Item.class);
+                .addAnnotatedClass(Item.class)
+                .addAnnotatedClass(Passport.class)
+                .addAnnotatedClass(Movie.class)
+                .addAnnotatedClass(Actor.class);
         SessionFactory sessionFactory = configuration.buildSessionFactory();
         Session session = sessionFactory.getCurrentSession();
 
@@ -25,12 +28,10 @@ public class App {
             session.beginTransaction();
 
             Person person = session.get(Person.class, 4);
+            System.out.println("We have the person here");
 
-            Item item = new Item("new Item from App.class", person);
+            System.out.println(person.getItems());
 
-            person.setItems(new ArrayList<>(Collections.singletonList(item)));
-
-            Long save = (Long) session.save(person);
 
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -59,4 +60,21 @@ public class App {
 //            people.forEach(System.out::println);
 //
 //            session.getTransaction().commit();
-
+//            Person person = session.get(Person.class,2);
+//
+//            Passport passport = new Passport(person, 12332231);
+//
+//            person.setPassport(passport);
+//
+//            session.save(person);
+//            Movie movie = new Movie("Pulp Fiction", 1996);
+//
+//            Actor actor1 = new Actor("Samuel L. Jackson", 70);
+//            Actor actor2 = new Actor("Bruce Willis", 68);
+//            Actor actor3 = new Actor("Uma Turman", 50);
+//
+//            movie.setActors(new ArrayList<>(List.of(actor1, actor2, actor3)));
+//
+//            actor1.setMovies(new ArrayList<>(Collections.singletonList(movie)));
+//            actor2.setMovies(new ArrayList<>(Collections.singletonList(movie)));
+//            actor3.setMovies(new ArrayList<>(Collections.singletonList(movie)));

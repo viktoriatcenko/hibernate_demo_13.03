@@ -1,7 +1,9 @@
 package ru.maxima.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,17 +21,21 @@ public class Person {
     @Column(name = "age")
     private int age;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToOne(mappedBy = "person")
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    private Passport passport;
+
+//    @OneToMany(mappedBy = "owner", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private List<Item> items;
 
     public Person() {
     }
 
-    public Person(int id, String name, int age, List<Item> items) {
-        this.id = id;
+    public Person(String name, int age) {
         this.name = name;
         this.age = age;
-        this.items = items;
     }
 
     public int getId() {
@@ -62,6 +68,23 @@ public class Person {
 
     public void setItems(List<Item> items) {
         this.items = items;
+    }
+
+    public Passport getPassport() {
+        return passport;
+    }
+
+    public void setPassport(Passport passport) {
+        this.passport = passport;
+        passport.setPerson(this);
+    }
+
+    public void add(Item item) {
+        if (items == null)
+            this.items = new ArrayList<>();
+
+        this.items.add(item);
+        item.setOwner(this);
     }
 
     @Override
